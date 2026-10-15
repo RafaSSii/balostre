@@ -1,0 +1,1 @@
+{"name":"balostre","private":true,"type":"module","workspaces":["packages/*","apps/*"],"scripts":{"test":"node --test packages/game-rules/test/*.test.js","server":"npm --workspace @balostre/server run start","server:dev":"npm --workspace @balostre/server run dev"},"engines":{"node":">=20.11"}}
