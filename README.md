@@ -4,7 +4,7 @@ Balostre is an independent browser-based 3D RPG prototype set in a stylized medi
 
 ## Prototype 0.1
 
-Built with Three.js, ES modules, and CSS. No bundler or install step is required. The scene includes a stylized forest clearing, ancient ruins, a third-person adventurer, goblins with simple pursuit/attack behavior, melee combat, a magic projectile, dodge, health/mana, and XP/level feedback. The current movement pass adds basic collision avoidance around trees and ruins, animated limbs and body motion while walking, and smoother third-person camera follow.
+Built with Three.js, ES modules, and CSS. No bundler or install step is required. The scene includes a stylized forest clearing, ancient ruins, a third-person adventurer, goblins with pursuit and telegraphed attacks, directional melee combat, a magic projectile, dodge timing, health/mana, mana regeneration, hit feedback, and XP/level progression. The current movement pass adds basic collision avoidance around trees and ruins, animated limbs and body motion while walking, and smoother third-person camera follow.
 
 ### Run locally
 
@@ -22,7 +22,8 @@ Three.js is loaded from jsDelivr, and the optional font styling is loaded from G
 
 - **W A S D** — move
 - **Mouse** — orbit camera (click the game to capture the pointer)
-- **Left click** — melee attack
+- **Left click** — directional melee attack (face the enemy)
+- **Dodge timing** — goblins telegraph their swing before dealing damage
 - **Q** — cast a magic bolt (costs 15 mana)
 - **Space** — dodge briefly
 - **?** — open the controls guide
