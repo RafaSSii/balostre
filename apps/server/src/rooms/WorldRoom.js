@@ -2,12 +2,12 @@ import { Room } from "colyseus";
 import { Schema, MapSchema, defineTypes } from "@colyseus/schema";
 import {
   GAME_RULES, normalizeInput, movePosition, applyMelee, applyMagic,
-  startDodge, applyGoblinDamage, regenerateMana
+  startDodge, applyGoblinDamage, regenerateMana, awardExperience
 } from "@balostre/game-rules";
 
 class PlayerState extends Schema {}
 defineTypes(PlayerState, {
-  x: "number", z: "number", yaw: "number", health: "number", mana: "number",
+  x: "number", z: "number", yaw: "number", health: "number", mana: "number", maxHealth: "number", maxMana: "number",
   level: "number", xp: "number", dodging: "boolean", name: "string"
 });
 class GoblinState extends Schema {}
@@ -47,7 +47,7 @@ export class WorldRoom extends Room {
   onJoin(client, options = {}) {
     const player = new PlayerState();
     Object.assign(player, {
-      x: 0, z: 0, yaw: 0, health: GAME_RULES.maxHealth, mana: GAME_RULES.maxMana,
+      x: 0, z: 0, yaw: 0, health: GAME_RULES.maxHealth, mana: GAME_RULES.maxMana, maxHealth: GAME_RULES.maxHealth, maxMana: GAME_RULES.maxMana,
       level: 1, xp: 0, dodging: false,
       name: typeof options.name === "string" ? options.name.trim().slice(0, 20) || "Andarilho" : "Andarilho"
     });
@@ -89,11 +89,12 @@ export class WorldRoom extends Room {
     player.mana = runtime.mana;
     target.alive = target.health > 0;
     if (!target.alive) {
-      player.xp += 35;
-      const threshold = player.level * 100;
-      if (player.xp >= threshold) {
-        player.xp -= threshold; player.level += 1;
-        player.health = GAME_RULES.maxHealth; player.mana = GAME_RULES.maxMana;
+      const progression = awardExperience(player, 35);
+      if (progression.levelsGained > 0) {
+        this.broadcast("combat", {
+          type: "level-up", by: client.sessionId, level: player.level,
+          levelsGained: progression.levelsGained, maxHealth: player.maxHealth, maxMana: player.maxMana
+        });
       }
       const goblinId = [...this.state.goblins.entries()].find(([, goblin]) => goblin === target)?.[0];
       this.broadcast("combat", { type: "goblin-defeated", id: goblinId, by: client.sessionId });
@@ -109,7 +110,7 @@ export class WorldRoom extends Room {
     const runtime = this.runtime.get(id);
     Object.assign(runtime, {
       x: player.x, z: player.z, yaw: player.yaw, health: player.health,
-      mana: player.mana, level: player.level
+      mana: player.mana, level: player.level, maxMana: player.maxMana
     });
     return runtime;
   }

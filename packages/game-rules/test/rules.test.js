@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { GAME_RULES, normalizeInput, movePosition, applyMelee, applyMagic, startDodge, applyGoblinDamage, regenerateMana } from "../src/index.js";
+import { GAME_RULES, normalizeInput, movePosition, applyMelee, applyMagic, startDodge, applyGoblinDamage, regenerateMana, awardExperience, levelXpThreshold } from "../src/index.js";
 
 test("validates input and normalizes diagonal movement", () => {
   assert.equal(normalizeInput({ dx: "north", dz: 0 }), null);
@@ -49,4 +49,23 @@ test("mana regeneration never exceeds the configured maximum", () => {
   const player = { mana: 59.8 };
   regenerateMana(player, 1000);
   assert.equal(player.mana, GAME_RULES.maxMana);
+});
+
+
+test("leveling increases stats, restores resources, and carries excess XP across levels", () => {
+  const player = { level: 1, xp: 0, health: 34, mana: 12, maxHealth: 100, maxMana: 60 };
+  assert.deepEqual(awardExperience(player, 250), { gained: 250, levelsGained: 2 });
+  assert.equal(player.level, 3);
+  assert.equal(player.xp, 50);
+  assert.equal(player.maxHealth, 140);
+  assert.equal(player.maxMana, 80);
+  assert.equal(player.health, 140);
+  assert.equal(player.mana, 80);
+  assert.equal(levelXpThreshold(3), 300);
+});
+
+test("mana regeneration respects the character's level-up maximum", () => {
+  const player = { mana: 69.5, maxMana: 80 };
+  regenerateMana(player, 1000);
+  assert.equal(player.mana, 70.05);
 });
