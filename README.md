@@ -4,7 +4,7 @@ Balostre is an independent browser-based 3D RPG prototype set in a stylized medi
 
 ## Browser prototype 0.1
 
-The current browser client uses Three.js, ES modules, and CSS. The scene includes a stylized forest clearing, ancient ruins, a third-person adventurer, goblins with pursuit and telegraphed attacks, directional melee combat, a magic projectile, dodge timing, health/mana, mana regeneration, hit feedback, and XP/level progression. Movement includes basic collision avoidance around trees and ruins, animated limbs, and smoother third-person camera follow.
+The current browser client uses Three.js, ES modules, and CSS. The scene includes a stylized forest clearing, ancient ruins, a third-person adventurer, goblins with pursuit and telegraphed attacks, directional melee combat, a magic projectile, dodge timing, health/mana, mana regeneration, hit feedback, and XP/level progression. Each level requires more XP than the previous one and increases maximum health by 20, maximum mana by 10, melee damage by 4, and magic damage by 5; health and mana are fully restored on level-up. Movement includes basic collision avoidance around trees and ruins, animated limbs, and smoother third-person camera follow.
 
 ### Run the browser prototype
 
@@ -30,7 +30,7 @@ Open http://localhost:8000 in a modern desktop browser. Use HTTP rather than ope
 
 The repository now contains an initial npm workspace:
 
-- `packages/game-rules` — rendering-independent rules for input validation, movement bounds, directional melee, magic costs/cooldowns, dodge invulnerability, goblin damage, and mana regeneration.
+- `packages/game-rules` — rendering-independent rules for input validation, movement bounds, directional melee, magic costs/cooldowns, dodge invulnerability, goblin damage, mana regeneration, XP thresholds, and character progression.
 - `apps/server` — a Colyseus WebSocket server with shared room state, server-side player movement, goblin pursuit/attacks, and combat actions.
 - `packages/game-rules/test` — Node.js automated tests for the shared rules.
 
