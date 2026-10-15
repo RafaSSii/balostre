@@ -1,15 +1,41 @@
 # Balostre
 
-Balostre is an independent browser-based 3D MMORPG project set in a stylized medieval fantasy world. The initial milestone is a playable third-person browser prototype, followed by hybrid combat, enemies, and authoritative multiplayer.
+Balostre is an independent browser-based 3D RPG prototype set in a stylized medieval fantasy world. The long-term goal is an MMORPG; the current milestone is a playable single-player browser prototype.
 
-## Initial direction
+## Prototype 0.1
 
-- Third-person camera and keyboard/mouse controls
-- Stylized medieval fantasy art direction
-- Hybrid action combat with targeted abilities
-- Small, explorable environment before expanding the world
-- TypeScript client with Three.js; multiplayer server planned with Colyseus
+Built with Three.js, ES modules, and CSS. No bundler or install step is required. The scene includes a stylized forest clearing, ancient ruins, a third-person adventurer, goblins with simple pursuit/attack behavior, melee combat, a magic projectile, dodge, health/mana, and XP/level feedback.
 
-## Status
+### Run locally
 
-Project initialized. The first implementation milestone is the browser prototype: movement, camera, a small fantasy arena, basic combat feedback, and a responsive HUD. Multiplayer and persistent accounts are later milestones, not yet implemented.
+From the repository root, start a static HTTP server:
+
+```bash
+python3 -m http.server 8000
+```
+
+Open http://localhost:8000 in a modern desktop browser. Use HTTP rather than opening `index.html` directly, because browsers may block JavaScript module imports on `file://`.
+
+Three.js is loaded from jsDelivr, and the optional font styling is loaded from Google Fonts, so the first run requires an internet connection.
+
+### Controls
+
+- **W A S D** — move
+- **Mouse** — orbit camera (click the game to capture the pointer)
+- **Left click** — melee attack
+- **Q** — cast a magic bolt (costs 15 mana)
+- **Space** — dodge briefly
+- **?** — open the controls guide
+- **Esc** — release the pointer
+
+### Current limitations
+
+This is a local single-player prototype. Multiplayer, accounts, persistent saves, full character animation assets, and production security are not implemented yet. Gameplay currently runs in the browser, so combat is not authoritative and must not be treated as cheat-resistant.
+
+## Roadmap
+
+1. Improve controls, collisions, animations, and combat feel
+2. Add automated tests for isolated game rules
+3. Add a Colyseus server with authoritative movement/combat and shared rooms
+4. Add accounts, persistent characters, inventory, quests, and progression
+5. Expand the world and deploy the client and server
