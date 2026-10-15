@@ -8,6 +8,26 @@ export const GAME_RULES = Object.freeze({
   goblinChaseRange: 13, manaRegenPerSecond: 0.55
 });
 
+export function levelXpThreshold(level) {
+  return Math.max(1, Math.floor(level)) * 100;
+}
+
+export function awardExperience(player, amount, rules = GAME_RULES) {
+  if (!player || !Number.isFinite(amount) || amount <= 0) return { gained: 0, levelsGained: 0 };
+  player.xp = Math.max(0, player.xp ?? 0) + amount;
+  let levelsGained = 0;
+  while (player.xp >= levelXpThreshold(player.level ?? 1)) {
+    player.xp -= levelXpThreshold(player.level ?? 1);
+    player.level = (player.level ?? 1) + 1;
+    levelsGained += 1;
+    player.maxHealth = (player.maxHealth ?? rules.maxHealth) + 20;
+    player.maxMana = (player.maxMana ?? rules.maxMana) + 10;
+    player.health = player.maxHealth;
+    player.mana = player.maxMana;
+  }
+  return { gained: amount, levelsGained };
+}
+
 export function normalizeInput(payload) {
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) return null;
   const dx = Number(payload.dx), dz = Number(payload.dz), yaw = Number(payload.yaw ?? 0);
@@ -63,6 +83,6 @@ export function applyGoblinDamage(player, now, rules = GAME_RULES) {
 }
 export function regenerateMana(player, deltaMs, rules = GAME_RULES) {
   if (!player || !Number.isFinite(deltaMs) || deltaMs <= 0) return;
-  player.mana = Math.min(rules.maxMana, (player.mana ?? 0) + rules.manaRegenPerSecond * Math.min(deltaMs, 1000) / 1000);
+  player.mana = Math.min(player.maxMana ?? rules.maxMana, (player.mana ?? 0) + rules.manaRegenPerSecond * Math.min(deltaMs, 1000) / 1000);
 }
 function clamp(value, min, max) { return Math.max(min, Math.min(max, value)); }
