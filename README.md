@@ -4,7 +4,7 @@ Balostre is an independent browser-based 3D RPG prototype set in a stylized medi
 
 ## Prototype 0.1
 
-Built with Three.js, ES modules, and CSS. No bundler or install step is required. The scene includes a stylized forest clearing, ancient ruins, a third-person adventurer, goblins with simple pursuit/attack behavior, melee combat, a magic projectile, dodge, health/mana, and XP/level feedback.
+Built with Three.js, ES modules, and CSS. No bundler or install step is required. The scene includes a stylized forest clearing, ancient ruins, a third-person adventurer, goblins with simple pursuit/attack behavior, melee combat, a magic projectile, dodge, health/mana, and XP/level feedback. The current movement pass adds basic collision avoidance around trees and ruins, animated limbs and body motion while walking, and smoother third-person camera follow.
 
 ### Run locally
 
@@ -34,7 +34,7 @@ This is a local single-player prototype. Multiplayer, accounts, persistent saves
 
 ## Roadmap
 
-1. Improve controls, collisions, animations, and combat feel
+1. Refine collision shapes, camera obstruction handling, and combat feel
 2. Add automated tests for isolated game rules
 3. Add a Colyseus server with authoritative movement/combat and shared rooms
 4. Add accounts, persistent characters, inventory, quests, and progression
